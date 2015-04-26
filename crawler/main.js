@@ -7,11 +7,13 @@ var async = require('async')
 var request = require('request')
 var bunyan = require('bunyan')
 var colors = require('colors')
+var fs = require('fs')
 var _ = require('lodash')
+var path = require('path')
 
 var logger = bunyan.createLogger({
   name: 'Crawler',
-  level: 'trace',
+  level: 'debug',
 })
 
 function makeFbRequest (path, query, cb) {
@@ -31,7 +33,7 @@ function makeFbRequest (path, query, cb) {
   )
 }
 
-var Q = 'amanhecer+contra'
+var Q = 'amanhecer+contra+maioridade+penal'
 
 function requestAmanhecerEvents (at, cb) {
 
@@ -39,8 +41,8 @@ function requestAmanhecerEvents (at, cb) {
     makeFbRequest('search', {
       type: 'event',
       q: Q,
-      fields: 'id,name,start_time,timezone,location,venue,description',
-      // fields: 'id,name,location',
+      // fields: 'id,name,start_time,timezone,location,venue,description',
+      fields: 'id,name,location',
       access_token: at,
     }, function (err, data, res) {
       if (err) {
@@ -61,14 +63,14 @@ function requestAmanhecerEvents (at, cb) {
   function getEvent(edata, cb) {
     var id = edata.id
     makeFbRequest(id, { metadata: 1, access_token: at, },
-    function (err, res, body) {
+    function (err, body, res) {
       if (err) {
         return cb(err)
       }
       makeFbRequest(id+'/attending', { summary: 1, access_token: at },
-      function (err2, res2, countBody) {
+      function (err2, countBody, res2) {
         var count = countBody && countBody.summary && countBody.summary.count
-        cb(null, _.extend(body, { count: count }))
+        cb(null, _.extend(body, { count: count, metadata: null }))
       })
     })
   }
@@ -79,25 +81,31 @@ function requestAmanhecerEvents (at, cb) {
     }
 
     var events = _.filter(_events, function (event) {
-      if (!event.location) {
+      if (event.location) {
         return true
       } else {
-        logger.trace('Event '+event.name+' doesn\'t have a location. Too bad.')
+        logger.debug('Event '+event.name+' doesn\'t have a location. Too bad.')
         return false
       }
     })
 
     // logger.info(_events)
 
-    if (events.length == 0) {
+    if (events.length === 0) {
       return cb(null, [])
     }
 
     async.map(events, getEvent, function (err, results) {
-
+      if (err) {
+        logger.warn('Error in async map.')
+        return cb(err)
+      }
+      cb(null, results)
     })
   })
 }
+
+var DataFile = path.join(__dirname, '../assets/data.js')
 
 function main () {
   function input (cb) {
@@ -116,7 +124,16 @@ function main () {
         logger.error('Damn!', err)
         return
       }
-      console.log('Events', JSON.stringify(events, null, 2))
+      var json = JSON.stringify(events, null, 2)
+      // console.log('Events', json)
+      console.log(DataFile)
+      fs.writeFile(DataFile, 'var __mapdata = '+json+';', function (err) {
+        if (err) {
+          logger.error('Err writing to data file.', err)
+          return
+        }
+        logger.info('Json written to data file successfully.')
+      })
     })
   // })
 }

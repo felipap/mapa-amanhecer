@@ -30,6 +30,7 @@ function addMarker(event) {
 
 	var popupHtml = '<h1>'+event.location+'</h1>'+
 	'<div class="description">'+sliceToWordLimit(event.description, 300)+'</p>'+
+	'<div class="label-default">'+event.count+' confirmaram presença</div>'+
 	'<button class="fb-btn">Acesse o Evento</button>';
 
 	var marker = L.marker(coords, {
