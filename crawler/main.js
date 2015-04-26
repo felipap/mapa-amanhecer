@@ -11,7 +11,7 @@ var _ = require('lodash')
 
 var logger = bunyan.createLogger({
   name: 'Crawler',
-  level: 'debug',
+  level: 'trace',
 })
 
 function makeFbRequest (path, query, cb) {
@@ -31,7 +31,7 @@ function makeFbRequest (path, query, cb) {
   )
 }
 
-var Q = 'amanhecer+contra+maioridade+penal'
+var Q = 'amanhecer+contra'
 
 function requestAmanhecerEvents (at, cb) {
 
@@ -39,8 +39,8 @@ function requestAmanhecerEvents (at, cb) {
     makeFbRequest('search', {
       type: 'event',
       q: Q,
-      // fields: 'id,name,start_time,timezone,location,venue,description',
-      fields: 'id,name,location',
+      fields: 'id,name,start_time,timezone,location,venue,description',
+      // fields: 'id,name,location',
       access_token: at,
     }, function (err, data, res) {
       if (err) {
@@ -87,6 +87,12 @@ function requestAmanhecerEvents (at, cb) {
       }
     })
 
+    // logger.info(_events)
+
+    if (events.length == 0) {
+      return cb(null, [])
+    }
+
     async.map(events, getEvent, function (err, results) {
 
     })
@@ -101,7 +107,7 @@ function main () {
     })
   }
 
-  var at = 'CAAL1nzNXZAScBAPO2WSGsC1z6tiAXNcM2Y0YzErV6IZCEq298ZCZAGcuvip5lZAjwGDz1Sqg60D94ZAC2Sob6dXiY2zeZCKGZAPEdaBA5LGG7w5aCrS5rJbzfaHPTnZA3ESvDMmiCTKq2jYGMCLuIX4QRBiZAfXh34ASIPnVnOC8s8aTqNpphACpYr2ZByl4yidRTgogZAozcL8o17oZBpIsPv0uqLXaMIDVB0ZC4ZD'
+  var at = 'CAACEdEose0cBAD5JvBUZBovucO8dZBdQ2al0eJjqOiEIRDfIrVzmSTSW6EiXJv0aHWoDrZCZCKZBTj5EbaPHGzH3tFVDdnOrfZCwpY3nu3JvvFzhJl9d1FR9HXgNUuK38HO2mo1mHZCcqJNY4jjpYg1ZBnsqYjCHcDqC6ypVzjkSoBA2QTBeUmZBsOSLj3dexeaIrdgCrDZATKkRcZAPe0d7XCrGVN5Yx4J3oMZD'
 
   // console.log('Enter a user access token: ')
   // input(function (at) {
@@ -110,7 +116,7 @@ function main () {
         logger.error('Damn!', err)
         return
       }
-      console.log(JSON.stringify(events, null, 2))
+      console.log('Events', JSON.stringify(events, null, 2))
     })
   // })
 }
