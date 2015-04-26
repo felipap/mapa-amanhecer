@@ -1,0 +1,34 @@
+{
+  "name": "amanhecer",
+  "description": "Mapa do Amanhecer Contra a Redução da Maioridade Penal.",
+  "version": "0.4.0",
+  "private": true,
+  "homepage": "http://qilabs.org",
+  "readmeFilename": "README.md",
+  "author": "Felipe Aragão Pires <pires.a.felipe@gmail.com> (http://f03lipe.github.com)",
+  "license": "BSD",
+  "main": "master.js",
+  "scripts": {},
+  "gitHead": "a9ef3dfea8d0873be9a7d7f78b211a0abc978de6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/f03lipe/mapa-amanhecer"
+  },
+  "engines": {},
+  "devDependencies": {
+    "browserify": "^9.0.8",
+    "browserify-shim": "^3.8.0",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.3.0",
+    "grunt-concurrent": "^1.0.0",
+    "grunt-contrib-less": "^1.0.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-nodemon": "^0.4.0",
+    "less-plugin-autoprefix": "^1.3.0",
+    "less-plugin-clean-css": "^1.5.0",
+    "minifyify": "^6.4.0"
+  },
+  "dependencies": {},
+  "browserify-shim": "./static/shim.js",
+  "browser": {}
+}
