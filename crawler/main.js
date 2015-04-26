@@ -13,7 +13,7 @@ var path = require('path')
 
 var logger = bunyan.createLogger({
   name: 'Crawler',
-  level: 'debug',
+  level: 'trace',
 })
 
 function makeFbRequest (path, query, cb) {
@@ -33,7 +33,7 @@ function makeFbRequest (path, query, cb) {
   )
 }
 
-var Q = 'amanhecer+contra+maioridade+penal'
+var Q = 'amanhecer+contra+redução'
 
 function requestAmanhecerEvents (at, cb) {
 
@@ -115,7 +115,7 @@ function main () {
     })
   }
 
-  var at = 'CAACEdEose0cBAD5JvBUZBovucO8dZBdQ2al0eJjqOiEIRDfIrVzmSTSW6EiXJv0aHWoDrZCZCKZBTj5EbaPHGzH3tFVDdnOrfZCwpY3nu3JvvFzhJl9d1FR9HXgNUuK38HO2mo1mHZCcqJNY4jjpYg1ZBnsqYjCHcDqC6ypVzjkSoBA2QTBeUmZBsOSLj3dexeaIrdgCrDZATKkRcZAPe0d7XCrGVN5Yx4J3oMZD'
+  var at = 'CAACEdEose0cBAAYKX9woKw0BegXk7ZAZBVkkL3C7NZB8BMitZBxK6Tf4eZBclysPDZBxIjvOfmYQZAloQu1iq4AmDunuLyfLJyMzIArZAnNKiV6ko2qGuveGZBuzpd32vb9Qdkenh0Elgay9WMCLE9aEH7FvSS588MsKv2ycPBLqOVdgDkSJYqPMjfiLlq4HkwDr9MfFSjljZBZAg7IPRLv7plmPCZBM8zaBZAxUZD'
 
   // console.log('Enter a user access token: ')
   // input(function (at) {
