@@ -28,6 +28,13 @@ function addMarker(event) {
 		return text.slice(0, max)
 	}
 
+	if (!event.venue.latitude) {
+		console.warn('Problematic event:', event.name)
+		return;
+	}
+
+	console.log(event.name, coords)
+
 	var popupHtml = '<h1>'+event.location+'</h1>'+
 	'<div class="description">'+sliceToWordLimit(event.description, 300)+'</p>'+
 	'<div class="label-default">'+event.count+' confirmaram presença</div>'+
@@ -47,24 +54,3 @@ if (__mapdata) {
 		addMarker(__mapdata[i])
 	}
 }
-
-// L.circle([51.508, -0.11], 500, {
-// 	color: 'red',
-// 	fillColor: '#f03',
-// 	fillOpacity: 0.5
-// }).addTo(map).bindPopup("I am a circle.");
-
-// L.polygon([
-// 	[51.509, -0.08],
-// 	[51.503, -0.06],
-// 	[51.51, -0.047]
-// ]).addTo(map).bindPopup("I am a polygon.");
-
-// function onMapClick(e) {
-// 	popup
-// 		.setLatLng(e.latlng)
-// 		.setContent("You clicked the map at " + e.latlng.toString())
-// 		.openOn(map);
-// }
-
-// map.on('click', onMapClick);
